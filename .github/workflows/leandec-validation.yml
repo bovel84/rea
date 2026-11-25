@@ -26,6 +26,10 @@ jobs:
           package-manager-cache: false
       - run: npm install --global npm@11.16.0
       - run: npm ci
+      - name: Format source and export exact formatted files
+        run: |
+          npx --no-install oxfmt src/leandec src/doctorRuntime.ts src/domain/doctorProviderIds.ts src/composition/binary.ts docs/.vitepress/documentation.ts docs/leandec-provider.md
+          node --input-type=module -e 'import {execFileSync} from "node:child_process"; import {readFileSync} from "node:fs"; for (const p of execFileSync("git",["diff","--name-only"],{encoding:"utf8"}).trim().split("\n").filter(Boolean)) {const b=readFileSync(p).toString("base64"); for(let i=0;i<b.length;i+=3000) console.log("FORMAT_BLOB "+p+" "+i+" "+b.slice(i,i+3000))}'
       - name: Leandec regression tests
         run: npm run test:local -- src/leandec/LeandecProvider.test.ts src/leandec/LeandecMcpClient.test.ts
       - name: TypeScript compilation
