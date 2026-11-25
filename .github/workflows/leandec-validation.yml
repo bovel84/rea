@@ -38,6 +38,9 @@ jobs:
       - name: Architecture guards and lint
         if: success() || failure()
         run: npm run check:fast
+      - name: Module boundaries
+        if: success() || failure()
+        run: npm run verify:module-boundaries
       - name: Format
         if: success() || failure()
         run: npx --no-install oxfmt --check src/leandec src/doctorRuntime.ts src/domain/doctorProviderIds.ts src/composition/binary.ts docs/.vitepress/documentation.ts docs/providers/leandec-provider.md docs/README.md scripts/lib/module-layers.mjs
